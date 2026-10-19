@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>crystal-debug</title></head>
+<body style="margin:0">
+<div id="out" style="position:fixed;top:0;left:0;z-index:99;color:#fff;font:12px monospace;white-space:pre"></div>
+<script type="module">
+import * as THREE from 'three';
+
+const out = document.getElementById('out');
+const log = (...a) => { out.textContent += a.join(' ') + '\n'; };
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(1);
+renderer.setSize(640, 480);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05070f);
+const cam = new THREE.PerspectiveCamera(60, 640 / 480, 0.1, 500);
+cam.position.set(0, 6, 14);
+cam.lookAt(0, 2, 0);
+
+// bright backdrop so glass has something to refract
+const back = new THREE.Mesh(
+  new THREE.PlaneGeometry(60, 60),
+  new THREE.MeshBasicMaterial({ color: 0x334466, side: THREE.BackSide })
+);
+back.position.z = -15;
+scene.add(back);
+
+const hemi = new THREE.HemisphereLight(0x8899ff, 0x101020, 1.0);
+const sun = new THREE.DirectionalLight(0xffffff, 2.0);
+sun.position.set(5, 10, 4);
+scene.add(hemi, sun);
+
+// crystal
+const glass = new THREE.Mesh(
+  new THREE.OctahedronGeometry(1, 0),
+  new THREE.MeshPhysicalMaterial({
+    color: 0xcfeaff,
+    transmission: 1.0,
+    thickness: 2.4,
+    roughness: 0.05,
+    ior: 2.15,
+    dispersion: 1.1,
+    emissive: 0xcfeaff,
+    emissiveIntensity: 0.18,
+    clearcoat: 1.0,
+  })
+);
+glass.scale.set(1, 1.85, 1);
+glass.position.set(0, 2.5, 0);
+scene.add(glass);
+
+// glowing core inside
+const core = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(0.16, 1),
+  new THREE.MeshBasicMaterial({ color: 0xbde8ff, fog: false })
+);
+core.position.set(0, 2.5, 0);
+scene.add(core);
+
+// a plain lit reference sphere
+const ref = new THREE.Mesh(
+  new THREE.SphereGeometry(0.8, 16, 12),
+  new THREE.MeshStandardMaterial({ color: 0xff8844, roughness: 0.4 })
+);
+ref.position.set(-2.5, 1.5, 0);
+scene.add(ref);
+
+renderer.render(scene, cam);
+const gl = renderer.getContext();
+const err = gl.getError();
+log('glError after render:', err);
+log('renderer.info:', JSON.stringify(renderer.info.render));
+
+// read back pixels
+const px = new Uint8Array(4 * 640 * 480);
+gl.readPixels(0, 0, 640, 480, gl.RGBA, gl.UNSIGNED_BYTE);
+const at = (x, y) => {
+  const i = (y * 640 + x) * 4;
+  return [px[i], px[i+1], px[i+2], px[i+3]];
+};
+// project glass center to screen: it's at (0,2.5,0), camera looks at it roughly
+log('crystal center px:', at(320, 216));
+log('crystal upper px:', at(320, 130));
+log('crystal lower px:', at(320, 300));
+log('ref sphere px:', at(140, 250));
+log('sky px:', at(320, 50));
+log('done');
+</script>
+</body>
+</html>

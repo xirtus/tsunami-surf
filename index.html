@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TSUNAMI — endless giant wave</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <div id="hud">
+    <div id="score">SCORE 0</div>
+    <div id="speed">0 km/h</div>
+    <div id="dist">DIST 0 m</div>
+    <div id="level">WAVE MAVERICK</div>
+    <div id="trick"></div>
+    <div id="cam"></div>
+  </div>
+  <div id="levels">
+    <div class="panel">
+      <h1>TSUNAMI</h1>
+      <p class="sub">ENDLESS GIANT WAVE</p>
+      <div id="breaks"></div>
+      <p class="controls">
+        &uarr; &darr; &mdash; pick a break (live preview) &middot; SPACE &mdash; drop in<br />
+        &larr; &rarr; / A D &mdash; carve &middot; SPACE &mdash; jump &middot; in the air: &larr; &rarr; spin, &uarr; &darr; flip<br />
+        C &mdash; camera &middot; L &mdash; wave select &middot; M &mdash; surfer
+      </p>
+    </div>
+  </div>
+  <div id="wipeout"></div>
+  <div id="settings" class="hidden">
+    <div class="panel">
+      <h2>SETTINGS</h2>
+      <div class="label">SURFER</div>
+      <div id="chars"></div>
+      <div class="hint">&larr; &rarr; select &middot; SPACE / M close</div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

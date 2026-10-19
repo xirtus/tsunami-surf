@@ -1,0 +1,25 @@
+{
+  "name": "snowsurf",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TSUNAMI - endless giant-wave surf game: procedurally generated infinite tsunami levels (Three.js)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "shaders": "node shader-validate.mjs",
+    "wavetest": "node wave-sync-test.mjs",
+    "camtest": "node cam-test.mjs",
+    "oceantest": "node ocean-test.mjs",
+    "steertest": "node steer-test.mjs",
+    "chartest": "node chartest.mjs",
+    "shots": "node levelshots.mjs"
+  },
+  "dependencies": {
+    "three": "0.184.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
