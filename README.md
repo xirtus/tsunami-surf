@@ -1,5 +1,7 @@
 # TSUNAMI — endless giant wave
 
+![TSUNAMI wave face](docs/screenshot.jpg)
+
 An arcade big-wave surf game for the web, built with vanilla Three.js + Vite.
 Every level is a **procedurally generated, infinite tsunami**: an endless train
 of colossal waves rolling downhill forever, surfaced with a poseidon-grade
